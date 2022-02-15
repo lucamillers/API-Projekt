@@ -35,7 +35,7 @@ Um die Schnittstelle zu spezifizieren, müssen zunächst alle Endpunkten festgel
 
 ### Entwurf und Implementierung einer REST-Schnittstelle ###
 
-![grafik](https://user-images.githubusercontent.com/79851320/152154251-db2d42ef-4941-4654-9d19-79516b55f039.png)
+![grafik](https://user-images.githubusercontent.com/79851320/154159570-6c6a85ec-51a1-48f7-81db-308ce4a01e83.png)
 
 Für das Erstellen der Spezifikation reicht ein einfacher Text-Editor. Für ein besseres Syntax-Highlighting und
 automatisches Einrücken wird Visual Studio Code mit entsprechenden Plugins empfohlen. Als Vorlage und Aus-
