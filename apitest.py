@@ -79,15 +79,6 @@ def handle_list(list_id):
 # define endpoint for getting and deleting existing todo list entries
 @app.route('/list/<list_id>/entry', methods=['POST'])
 def add_new_entry(list_id):
-    # find todo list depending on given list id
-    list_item = None
-    for l in todo_lists:
-        if l['id'] == list_id:
-            list_item = l
-            break
-    # if the given list id is invalid, return status code 404
-    if not list_item:
-        abort(404)
     if request.method == 'POST':
     # make JSON from POST data (even if content type is not set correctly)
         new_entry = request.get_json(force=True)
@@ -99,7 +90,49 @@ def add_new_entry(list_id):
         print('Current Entries: {}'.format(todos))
         return jsonify(new_entry), 200
 
-
+# define endpoint for updating existing todo list entries
+@app.route('/list/<list_id>/entry/<entry_id>', methods=['POST', 'DELETE'])
+def handle_entry(list_id, entry_id):
+    # find todo list depending on given list id
+    list_item = None
+    for l in todo_lists:
+        if l['id'] == list_id:
+            list_item = l
+            break
+    # find todo list entry depending on given entry id
+    entry_item = None
+    for g in todos:
+        if g['id'] == entry_id:
+            entry_item = g
+            break
+    # if the given list id is invalid, return status code 404
+    if not list_item:
+        abort(404)
+    elif not list_item:
+        abort(404)
+    # if the given entry id is invalid, return status code 404
+    if not entry_item:
+        abort(404)
+    elif not entry_item:
+        abort(404)
+    if request.method == 'POST':
+        # delete list entry with given id
+        print('Deleting item from list...')
+        todos.remove(entry_item)
+        # make JSON from POST data (even if content type is not set correctly)
+        new_entry = request.get_json(force=True)
+        print('Got new entry to be added: {}'.format(new_entry))
+        # create id for new entry, save it and return the list with id (thus updating an existing entry)
+        new_entry['id'] = str(uuid.uuid4())
+        new_entry['list'] = list_id
+        todos.append(new_entry)
+        print('Current Entries: {}'.format(todos))
+        return jsonify(new_entry), 200
+    elif request.method == 'DELETE':
+        # delete list entry with given id
+        print('Deleting item from list...')
+        todos.remove(entry_item)
+        return jsonify(todos), 200
 
 # define endpoint for adding a new list
 @app.route('/list', methods=['POST'])
@@ -126,7 +159,7 @@ def get_all_users():
 # define endpoint for getting all todos
 @app.route('/todos', methods=['GET'])
 def get_all_todos():
-    return jsonify(todos)
+    return jsonify(todos) 
 
 # define endpoint for adding a new list
 @app.route('/user', methods=['POST'])
